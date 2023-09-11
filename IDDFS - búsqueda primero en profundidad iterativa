@@ -1,0 +1,71 @@
+# Definición de un grafo como un diccionario de listas de adyacencia
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F', 'G', 'H'],
+    'D': ['I', 'J'],
+    'E': ['K', 'L', 'M'],
+    'F': ['H'],
+    'G': [],
+    'H': ['O', 'P'],
+    'I': [],
+    'J': [],
+    'K': [],
+    'L': [],
+    'M': [],
+    'N': [],
+    'O': [],
+    'P': [],
+}
+
+# Definición de un grafo como un diccionario de listas de adyacencia
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+
+def busca_primero_en_profundidad_iterativa(graph, start, goal):
+    max_depth = 0
+
+    while True:
+        # Inicializar una pila para seguir la ruta
+        stack = [(start, 0)]
+        # Inicializar un conjunto para llevar un registro de nodos visitados
+        visited = set()
+
+        while stack:
+            current_node, depth = stack.pop()
+
+            # Marcar el nodo como visitado y mostrarlo
+            visited.add(current_node)
+            print(f"Nodo visitado: {current_node}")
+
+            # Verificar si hemos llegado al nodo objetivo
+            if current_node == goal:
+                return True
+
+            # Limitar la profundidad de búsqueda
+            if depth < max_depth:
+                for neighbor in graph[current_node]:
+                    if neighbor not in visited and neighbor not in [node for node, _ in stack]:
+                        stack.append((neighbor, depth + 1))
+
+        # Incrementar la profundidad máxima para la próxima iteración
+        max_depth += 1
+
+    # Si no se encontró el objetivo, devolver False
+    return False
+
+
+start_node = 'A'
+goal_node = 'F'
+
+if busca_primero_en_profundidad_iterativa(graph, start_node, goal_node):
+    print(f"Se encontró una ruta de {start_node} a {goal_node}")
+else:
+    print(f"No se encontró una ruta de {start_node} a {goal_node}")
